@@ -31,9 +31,6 @@
       ],
       "js": [
         "src/pages/content/index.js"
-      ],
-      "css": [
-        "assets/css/contentStyle1703324178188.chunk.css"
       ]
     }
   ],

@@ -1,3 +1,5 @@
+import { PauseSVG } from "@root/src/assets/svg/PauseSVG";
+import { PlaySVG } from "@root/src/assets/svg/PlaySVG";
 import { useRef, useState, useCallback, useEffect } from "react";
 
 export const getWordAt = (str: string, pos: number) => {
@@ -56,7 +58,7 @@ export const App = () => {
     }
   }, []);
 
-  const onPressSpeech = (event: React.MouseEvent<HTMLElement>) => {
+  const onClickSpeech = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
     setPause(false);
     setIsPlay(true);
@@ -90,7 +92,7 @@ export const App = () => {
     console.log("translate");
   };
 
-  const onClickPause = (event: React.MouseEvent<HTMLElement>) => {
+  const onClickPlayPause = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
     !pause ? synth.pause() : synth.resume();
     setPause(!pause);
@@ -130,15 +132,44 @@ export const App = () => {
             top: elementSizes.top - 5 + window.scrollY,
             left: elementSizes.left - 5,
             pointerEvents: "none",
-            zIndex: -1,
+            zIndex: 999,
           }}
         >
-
-          <div className="SelectedContainer">
-
+          <div className="SelectedContainer"></div>
+          <div className="ButtonsContainer">
+            <div className="ButtonsBloc">
+              <PlayPauseButton
+                isPlay={isPlay}
+                pause={pause}
+                onClickPlayPause={onClickPlayPause}
+              />
+              <SpeachButton onClickSpeach={onClickSpeech} />
+            </div>
           </div>
-
         </div>
+      )}
+    </>
+  );
+};
+
+const SpeachButton = ({ onClickSpeach }) => {
+  return (
+    <button onClick={(event) => onClickSpeach(event)} className="SpeachButton">
+      Speach
+    </button>
+  );
+};
+
+const PlayPauseButton = ({ isPlay, pause, onClickPlayPause }) => {
+  return (
+    <>
+      {isPlay && (
+        <button
+          onClick={(event) => onClickPlayPause(event)}
+          className="PlayPauseButton"
+        >
+         {pause ? <PlaySVG color="#fff" /> : <PauseSVG color="#fff" />}
+        </button>
       )}
     </>
   );
