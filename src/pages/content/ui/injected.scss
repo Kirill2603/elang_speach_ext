@@ -61,7 +61,53 @@ $elangAccent: rgb(124, 148, 255);
   width: 30px;
   svg {
     height: 100%;
-    // aspect-ratio: 1;
     width: auto;
+  }
+}
+
+.CloseButton {
+  pointer-events: all;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  height: 22px;
+  position: absolute;
+  right: -13px;
+  top: -13px;
+  box-shadow: -1px 5px 10px 3px $elang03;
+  border-radius: 100%;
+  background-color: $elang;
+  svg{
+    fill: $elang;
+    scale: 1;
+  }
+}
+.TranslateButton {
+  cursor: pointer;
+  background: none;
+  border: none;
+  // padding: 0;
+  height: 30px;
+  width: 30px;
+  background-color: $elang;
+  border-radius: 7px;
+  svg {
+    height: 100%;
+    width: 100%;
+  }
+}
+.SaveButton {
+  cursor: pointer;
+  background: none;
+  border: none;
+  // padding: 0;
+  height: 30px;
+  width: 30px;
+  background-color: $elang;
+  border-radius: 7px;
+  svg {
+    height: 100%;
+    width: 100%;
   }
 }

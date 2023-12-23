@@ -1,5 +1,8 @@
+import { CloseSVG } from "@root/src/assets/svg/CloseSVG";
 import { PauseSVG } from "@root/src/assets/svg/PauseSVG";
 import { PlaySVG } from "@root/src/assets/svg/PlaySVG";
+import { SaveSVG } from "@root/src/assets/svg/SaveSVG";
+import { TranslateSVG } from "@root/src/assets/svg/TranslateSVG";
 import { useRef, useState, useCallback, useEffect } from "react";
 
 export const getWordAt = (str: string, pos: number) => {
@@ -117,11 +120,6 @@ export const App = () => {
   }, [hoveredElement]);
 
   return (
-    // <div className='App'>
-
-    //   <span className='Span'>asdasdasd</span>
-
-    // </div>
     <>
       {hoveredElement && (
         <div
@@ -135,7 +133,9 @@ export const App = () => {
             zIndex: 999,
           }}
         >
-          <div className="SelectedContainer"></div>
+          <div className="SelectedContainer">
+            <CloseButton onClickClose={onClickClose}/>
+          </div>
           <div className="ButtonsContainer">
             <div className="ButtonsBloc">
               <PlayPauseButton
@@ -144,11 +144,37 @@ export const App = () => {
                 onClickPlayPause={onClickPlayPause}
               />
               <SpeachButton onClickSpeach={onClickSpeech} />
+              <TranslateButton onClickTranslate={onClickTranslate}/>
+              <SaveButton onClickSave={onClickSave}/>
             </div>
           </div>
         </div>
       )}
     </>
+  );
+};
+
+const SaveButton = ({ onClickSave }) => {
+  return (
+    <button onClick={(event) => onClickSave(event)} className="SaveButton">
+      <SaveSVG />
+    </button>
+  );
+};
+
+const TranslateButton = ({ onClickTranslate }) => {
+  return (
+    <button onClick={(event) => onClickTranslate(event)} className="TranslateButton">
+      <TranslateSVG />
+    </button>
+  );
+};
+
+const CloseButton = ({ onClickClose }) => {
+  return (
+    <button onClick={(event) => onClickClose(event)} className="CloseButton">
+      <CloseSVG />
+    </button>
   );
 };
 

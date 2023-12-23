@@ -1,8 +1,8 @@
 export const TranslateSVG = () => {
   return (
     <svg
-      width="100%"
-      height="100%"
+      width="16"
+      height="16"
       viewBox="0 0 16 16"
       xmlns="http://www.w3.org/2000/svg"
       fill="#fff"
