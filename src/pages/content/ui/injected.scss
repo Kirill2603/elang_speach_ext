@@ -1,0 +1,11 @@
+$elang: rgba(79,110,253);
+$elang03: rgba(79,110,253, 0.3);
+$elang02: rgba(79,110,253, 0.2);
+
+.SelectedContainer {
+  background-color: $elang03;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  box-shadow: -1px 5px 10px 3px $elang02;
+}

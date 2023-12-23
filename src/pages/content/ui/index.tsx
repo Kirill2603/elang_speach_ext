@@ -1,14 +1,15 @@
 import { createRoot } from 'react-dom/client';
-import App from '@pages/content/ui/app';
+import {App} from '@pages/content/ui/app';
 import refreshOnUpdate from 'virtual:reload-on-update-in-view';
-import injectedStyle from './injected.css?inline';
+import injectedStyle from './injected.scss?inline';
 
 refreshOnUpdate('pages/content');
 
 const root = document.createElement('div');
-root.id = 'chrome-extension-boilerplate-react-vite-content-view-root';
+root.id = 'elang_speach_extension';
 
-document.body.append(root);
+// document.body.append(root);
+document.body.insertBefore(root, document.body.childNodes[0]);
 
 const rootIntoShadow = document.createElement('div');
 rootIntoShadow.id = 'shadow-root';
