@@ -29,6 +29,7 @@ export const App = () => {
     text: string;
     translation: string;
   }>(null);
+  const [isLoadingTranslate, setIsLoadingTranslate] = useState<boolean>(false);
   const utterance = new SpeechSynthesisUtterance();
   const synth = window.speechSynthesis;
 
@@ -55,8 +56,9 @@ export const App = () => {
     //    .join(" ");
 
     if (
-      element.tagName === ("P" || "SPAN" || "") &&
-      element.innerText !== hoveredElement?.innerText
+      element.tagName === ("P" || "SPAN" || "DIV") ||
+      (element.tagName !== "BODY" &&
+        element.innerText !== hoveredElement?.innerText)
     ) {
       setHoveredElement(element);
       setElementSizes(element.getBoundingClientRect());
@@ -95,15 +97,17 @@ export const App = () => {
 
   const onClickTranslate = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
+    setIsLoadingTranslate(true);
     chrome.runtime.sendMessage(
       { type: "translate", text: hoveredElement.innerText },
       (res) => {
         if (res) {
           setTranslated(res);
-         
+          setIsLoadingTranslate(false);
         }
       }
     );
+  
   };
 
   const onClickPlayPause = (event: React.MouseEvent<HTMLElement>) => {
@@ -117,11 +121,13 @@ export const App = () => {
   };
 
   useEffect(() => {
-    if(translated) {
-      hoveredElement.innerText = translated.translation
-      setElementSizes(hoveredElement.getBoundingClientRect())
+    if (translated) {
+      // const styles = window.getComputedStyle(hoveredElement);
+      hoveredElement.innerText = translated.translation;
+      // hoveredElement.style = styles
+      setElementSizes(hoveredElement.getBoundingClientRect());
     }
-  }, [translated])  
+  }, [translated]);
 
   useEffect(() => {
     synth.cancel();
@@ -131,7 +137,7 @@ export const App = () => {
     return () => {
       if (hoveredElement) {
         hoveredElement.innerHTML = oldElementText;
-        setTranslated(null)
+        setTranslated(null);
       }
       setIsPlay(false);
       documentRef.current.removeEventListener("click", () => {}, false);
@@ -163,7 +169,7 @@ export const App = () => {
                 onClickPlayPause={onClickPlayPause}
               />
               <SpeachButton onClickSpeach={onClickSpeech} />
-              <TranslateButton onClickTranslate={onClickTranslate} />
+              <TranslateButton isLoadingTranslate={isLoadingTranslate} onClickTranslate={onClickTranslate} />
               <SaveButton onClickSave={onClickSave} />
             </div>
           </div>
@@ -181,13 +187,15 @@ const SaveButton = ({ onClickSave }) => {
   );
 };
 
-const TranslateButton = ({ onClickTranslate }) => {
+const TranslateButton = ({ isLoadingTranslate, onClickTranslate }) => {
+
   return (
     <button
       onClick={(event) => onClickTranslate(event)}
+      disabled={isLoadingTranslate}
       className="TranslateButton"
     >
-      <TranslateSVG />
+      {isLoadingTranslate ? <CircleLoader /> : <TranslateSVG />}
     </button>
   );
 };
@@ -221,4 +229,8 @@ const PlayPauseButton = ({ isPlay, pause, onClickPlayPause }) => {
       )}
     </>
   );
+};
+
+const CircleLoader = () => {
+  return <div className="lds-dual-ring"></div>;
 };

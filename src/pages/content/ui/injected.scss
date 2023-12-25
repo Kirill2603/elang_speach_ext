@@ -92,6 +92,9 @@ $elangAccent: rgb(124, 148, 255);
   width: 30px;
   background-color: $elang;
   border-radius: 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   svg {
     height: 100%;
     width: 100%;
@@ -109,5 +112,33 @@ $elangAccent: rgb(124, 148, 255);
   svg {
     height: 100%;
     width: 100%;
+  }
+}
+
+.lds-dual-ring {
+  // display: inline-block;
+  display: flex;
+  height: 30px;
+  width: 30px;
+  justify-content: center;
+  align-items: center;
+}
+.lds-dual-ring:after {
+  content: "";
+  display: block;
+  height: 20px;
+  width: 20px;
+
+  border-radius: 50%;
+  border: 2px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
