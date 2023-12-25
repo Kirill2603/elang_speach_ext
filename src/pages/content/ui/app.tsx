@@ -111,12 +111,13 @@ export const App = () => {
   };
 
   const onClickPlayPause = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation();
+
     !pause ? synth.pause() : synth.resume();
     setPause(!pause);
   };
 
-  const onClickClose = () => {
+  const onClickClose = (event: React.MouseEvent<HTMLElement>) => {
+    event.stopPropagation();
     setHoveredElement(null);
   };
 
