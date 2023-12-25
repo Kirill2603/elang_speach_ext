@@ -1,5 +1,6 @@
 import { j as jsxRuntimeExports, a as addHmrIntoView, c as createRoot } from "../../../assets/js/_virtual_reload-on-update-in-view.js";
-import { w as withErrorBoundary, a as withSuspense, u as useStorage, l as logo } from "../../../assets/js/withErrorBoundary.js";
+import { l as logo } from "../../../assets/js/logo.js";
+import { w as withErrorBoundary, a as withSuspense, u as useStorage } from "../../../assets/js/withErrorBoundary.js";
 import { e as exampleThemeStorage } from "../../../assets/js/exampleThemeStorage.js";
 const SidePanel = () => {
   const theme = useStorage(exampleThemeStorage);
