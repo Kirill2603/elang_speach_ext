@@ -1,9 +1,9 @@
+import { useRef, useState, useCallback, useEffect } from "react";
 import { CloseSVG } from "@root/src/assets/svg/CloseSVG";
 import { PauseSVG } from "@root/src/assets/svg/PauseSVG";
 import { PlaySVG } from "@root/src/assets/svg/PlaySVG";
 import { SaveSVG } from "@root/src/assets/svg/SaveSVG";
 import { TranslateSVG } from "@root/src/assets/svg/TranslateSVG";
-import { useRef, useState, useCallback, useEffect } from "react";
 
 export const getWordAt = (str: string, pos: number) => {
   str = String(str);
@@ -25,7 +25,10 @@ export const App = () => {
   const [elementSizes, setElementSizes] = useState<DOMRect | null>(null);
   const [isPlay, setIsPlay] = useState<boolean>(false);
   const [pause, setPause] = useState<boolean>(false);
-
+  const [translated, setTranslated] = useState<{
+    text: string;
+    translation: string;
+  }>(null);
   const utterance = new SpeechSynthesisUtterance();
   const synth = window.speechSynthesis;
 
@@ -52,7 +55,7 @@ export const App = () => {
     //    .join(" ");
 
     if (
-      element.tagName !== ("BODY" || "A") &&
+      element.tagName === ("P" || "SPAN" || "") &&
       element.innerText !== hoveredElement?.innerText
     ) {
       setHoveredElement(element);
@@ -92,7 +95,15 @@ export const App = () => {
 
   const onClickTranslate = (event: React.MouseEvent<HTMLElement>) => {
     event.stopPropagation();
-    console.log("translate");
+    chrome.runtime.sendMessage(
+      { type: "translate", text: hoveredElement.innerText },
+      (res) => {
+        if (res) {
+          setTranslated(res);
+         
+        }
+      }
+    );
   };
 
   const onClickPlayPause = (event: React.MouseEvent<HTMLElement>) => {
@@ -106,6 +117,13 @@ export const App = () => {
   };
 
   useEffect(() => {
+    if(translated) {
+      hoveredElement.innerText = translated.translation
+      setElementSizes(hoveredElement.getBoundingClientRect())
+    }
+  }, [translated])  
+
+  useEffect(() => {
     synth.cancel();
 
     documentRef.current.addEventListener("click", onClickElement);
@@ -113,6 +131,7 @@ export const App = () => {
     return () => {
       if (hoveredElement) {
         hoveredElement.innerHTML = oldElementText;
+        setTranslated(null)
       }
       setIsPlay(false);
       documentRef.current.removeEventListener("click", () => {}, false);
@@ -134,7 +153,7 @@ export const App = () => {
           }}
         >
           <div className="SelectedContainer">
-            <CloseButton onClickClose={onClickClose}/>
+            <CloseButton onClickClose={onClickClose} />
           </div>
           <div className="ButtonsContainer">
             <div className="ButtonsBloc">
@@ -144,8 +163,8 @@ export const App = () => {
                 onClickPlayPause={onClickPlayPause}
               />
               <SpeachButton onClickSpeach={onClickSpeech} />
-              <TranslateButton onClickTranslate={onClickTranslate}/>
-              <SaveButton onClickSave={onClickSave}/>
+              <TranslateButton onClickTranslate={onClickTranslate} />
+              <SaveButton onClickSave={onClickSave} />
             </div>
           </div>
         </div>
@@ -164,7 +183,10 @@ const SaveButton = ({ onClickSave }) => {
 
 const TranslateButton = ({ onClickTranslate }) => {
   return (
-    <button onClick={(event) => onClickTranslate(event)} className="TranslateButton">
+    <button
+      onClick={(event) => onClickTranslate(event)}
+      className="TranslateButton"
+    >
       <TranslateSVG />
     </button>
   );
@@ -194,7 +216,7 @@ const PlayPauseButton = ({ isPlay, pause, onClickPlayPause }) => {
           onClick={(event) => onClickPlayPause(event)}
           className="PlayPauseButton"
         >
-         {pause ? <PlaySVG color="#fff" /> : <PauseSVG color="#fff" />}
+          {pause ? <PlaySVG color="#fff" /> : <PauseSVG color="#fff" />}
         </button>
       )}
     </>

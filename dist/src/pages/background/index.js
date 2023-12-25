@@ -1046,3 +1046,34 @@ var browserPolyfill = { exports: {} };
 addHmrIntoScript("pages/background");
 addHmrIntoScript("pages/content/style.scss");
 console.log("background loaded");
+const dataFromGoogleApiFromPopup = async (word, from, to) => {
+  const url = "https://easy4learn.com/api/vocabulary-translate/translate-phases";
+  const options = {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json;charset=UTF-8"
+    },
+    body: JSON.stringify({
+      from,
+      to,
+      text: word
+    })
+  };
+  const translate2 = fetch(url, options).then((response) => response.json()).then((data) => {
+    return data;
+  }).catch((e) => console.log(e));
+  return translate2;
+};
+const getTranslate = async (request, sender, sendResponse) => {
+  const data = await dataFromGoogleApiFromPopup(request.text, "en", "ru");
+  sendResponse(data);
+};
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    if (request.type === "translate") {
+      getTranslate(request, sender, sendResponse);
+    }
+    return true;
+  }
+);

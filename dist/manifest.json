@@ -5,7 +5,9 @@
   "description": "Learning languages with any article on the web & play with AI to memorize  words",
   "permissions": [
     "storage",
-    "sidePanel"
+    "sidePanel",
+    "scripting",
+    "notifications"
   ],
   "side_panel": {
     "default_path": "src/pages/sidepanel/index.html"

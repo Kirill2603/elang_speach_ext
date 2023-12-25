@@ -163,6 +163,7 @@ const App = () => {
   const [elementSizes, setElementSizes] = reactExports.useState(null);
   const [isPlay, setIsPlay] = reactExports.useState(false);
   const [pause, setPause] = reactExports.useState(false);
+  const [translated, setTranslated] = reactExports.useState(null);
   const utterance = new SpeechSynthesisUtterance();
   const synth = window.speechSynthesis;
   const speech = (textToSpeach) => {
@@ -173,7 +174,7 @@ const App = () => {
   };
   const onClickElement = reactExports.useCallback((event) => {
     const element = event.target;
-    if (element.tagName !== "BODY" && element.innerText !== (hoveredElement == null ? void 0 : hoveredElement.innerText)) {
+    if (element.tagName === "P" && element.innerText !== (hoveredElement == null ? void 0 : hoveredElement.innerText)) {
       setHoveredElement(element);
       setElementSizes(element.getBoundingClientRect());
       setOldElementText(element.innerHTML);
@@ -203,7 +204,14 @@ const App = () => {
   };
   const onClickTranslate = (event) => {
     event.stopPropagation();
-    console.log("translate");
+    chrome.runtime.sendMessage(
+      { type: "translate", text: hoveredElement.innerText },
+      (res) => {
+        if (res) {
+          setTranslated(res);
+        }
+      }
+    );
   };
   const onClickPlayPause = (event) => {
     event.stopPropagation();
@@ -214,11 +222,18 @@ const App = () => {
     setHoveredElement(null);
   };
   reactExports.useEffect(() => {
+    if (translated) {
+      hoveredElement.innerText = translated.translation;
+      setElementSizes(hoveredElement.getBoundingClientRect());
+    }
+  }, [translated]);
+  reactExports.useEffect(() => {
     synth.cancel();
     documentRef.current.addEventListener("click", onClickElement);
     return () => {
       if (hoveredElement) {
         hoveredElement.innerHTML = oldElementText;
+        setTranslated(null);
       }
       setIsPlay(false);
       documentRef.current.removeEventListener("click", () => {
@@ -260,7 +275,14 @@ const SaveButton = ({ onClickSave }) => {
   return /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: (event) => onClickSave(event), className: "SaveButton", children: /* @__PURE__ */ jsxRuntimeExports.jsx(SaveSVG, {}) });
 };
 const TranslateButton = ({ onClickTranslate }) => {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: (event) => onClickTranslate(event), className: "TranslateButton", children: /* @__PURE__ */ jsxRuntimeExports.jsx(TranslateSVG, {}) });
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    "button",
+    {
+      onClick: (event) => onClickTranslate(event),
+      className: "TranslateButton",
+      children: /* @__PURE__ */ jsxRuntimeExports.jsx(TranslateSVG, {})
+    }
+  );
 };
 const CloseButton = ({ onClickClose }) => {
   return /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: (event) => onClickClose(event), className: "CloseButton", children: /* @__PURE__ */ jsxRuntimeExports.jsx(CloseSVG, {}) });

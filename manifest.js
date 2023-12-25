@@ -9,7 +9,7 @@ const manifest = {
   name: 'Elang: Speach extension',
   version: packageJson.version,
   description: packageJson.description,
-  permissions: ['storage', 'sidePanel'],
+  permissions: ['storage', 'sidePanel', 'scripting',"notifications",],
   side_panel: {
     default_path: 'src/pages/sidepanel/index.html',
   },
