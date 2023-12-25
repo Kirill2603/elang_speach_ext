@@ -107,11 +107,10 @@ export const App = () => {
         }
       }
     );
-  
   };
 
   const onClickPlayPause = (event: React.MouseEvent<HTMLElement>) => {
-
+    event.stopPropagation();
     !pause ? synth.pause() : synth.resume();
     setPause(!pause);
   };
@@ -170,7 +169,10 @@ export const App = () => {
                 onClickPlayPause={onClickPlayPause}
               />
               <SpeachButton onClickSpeach={onClickSpeech} />
-              <TranslateButton isLoadingTranslate={isLoadingTranslate} onClickTranslate={onClickTranslate} />
+              <TranslateButton
+                isLoadingTranslate={isLoadingTranslate}
+                onClickTranslate={onClickTranslate}
+              />
               <SaveButton onClickSave={onClickSave} />
             </div>
           </div>
@@ -189,7 +191,6 @@ const SaveButton = ({ onClickSave }) => {
 };
 
 const TranslateButton = ({ isLoadingTranslate, onClickTranslate }) => {
-
   return (
     <button
       onClick={(event) => onClickTranslate(event)}

@@ -1,18 +1,16 @@
-import React from "react";
 import "./SwitchStyle.scss";
-import { FC } from "react";
-import { useRef } from "react";
-import { useState } from "react";
+import React, { FC, useState } from "react";
 
-type SwitchProps = {};
+type SwitchProps = {
+  isChecked: boolean
+  toggleSwitch: () => void
+};
 
-export const Switch: FC<SwitchProps> = ({}) => {
-  const [isChecked, setIsChecked] = useState(true);
-
+export const Switch: FC<SwitchProps> = ({isChecked, toggleSwitch}) => {
   const onClickSwitch = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    setIsChecked(!isChecked);
+    toggleSwitch();
   };
 
   return (

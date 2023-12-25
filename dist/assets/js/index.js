@@ -217,6 +217,7 @@ const App = () => {
     );
   };
   const onClickPlayPause = (event) => {
+    event.stopPropagation();
     !pause ? synth.pause() : synth.resume();
     setPause(!pause);
   };
@@ -267,7 +268,13 @@ const App = () => {
             }
           ),
           /* @__PURE__ */ jsxRuntimeExports.jsx(SpeachButton, { onClickSpeach: onClickSpeech }),
-          /* @__PURE__ */ jsxRuntimeExports.jsx(TranslateButton, { isLoadingTranslate, onClickTranslate }),
+          /* @__PURE__ */ jsxRuntimeExports.jsx(
+            TranslateButton,
+            {
+              isLoadingTranslate,
+              onClickTranslate
+            }
+          ),
           /* @__PURE__ */ jsxRuntimeExports.jsx(SaveButton, { onClickSave })
         ] }) })
       ]

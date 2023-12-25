@@ -1,14 +1,19 @@
-import React from 'react';
-import extIcon from '@assets/ext_icon.png';
-import '@pages/popup/Popup.scss';
-import useStorage from '@src/shared/hooks/useStorage';
-import exampleThemeStorage from '@src/shared/storages/exampleThemeStorage';
-import withSuspense from '@src/shared/hoc/withSuspense';
-import withErrorBoundary from '@src/shared/hoc/withErrorBoundary';
-import { Switch } from './components/Switch';
+import React, { useState } from "react";
+import extIcon from "@assets/ext_icon.png";
+import "@pages/popup/Popup.scss";
+import useStorage from "@src/shared/hooks/useStorage";
+import exampleThemeStorage from "@src/shared/storages/exampleThemeStorage";
+import withSuspense from "@src/shared/hoc/withSuspense";
+import withErrorBoundary from "@src/shared/hoc/withErrorBoundary";
+import { Switch } from "./components/Switch";
 
 const Popup = () => {
   const theme = useStorage(exampleThemeStorage);
+  const [isExtensionON, toggleExtension] = useState<boolean>(true);
+
+  const onToggleExtension = () => {
+    toggleExtension(!isExtensionON);
+  };
 
   return (
     <div
@@ -16,7 +21,7 @@ const Popup = () => {
       // style={{
       //   backgroundColor: theme === 'light' ? '#fff' : '#000',
       // }}
-      >
+    >
       {/* <header className="App-header" style={{ color: theme === 'light' ? '#000' : '#fff' }}> */}
       <header className="App-header">
         <img src={extIcon} className="App-logo" alt="logo" />
@@ -40,10 +45,13 @@ const Popup = () => {
           Toggle theme
         </button> */}
 
-        <Switch  />
+        <Switch isChecked={isExtensionON} toggleSwitch={onToggleExtension} />
       </header>
     </div>
   );
 };
 
-export default withErrorBoundary(withSuspense(Popup, <div> Loading ... </div>), <div> Error Occur </div>);
+export default withErrorBoundary(
+  withSuspense(Popup, <div> Loading ... </div>),
+  <div> Error Occur </div>
+);
