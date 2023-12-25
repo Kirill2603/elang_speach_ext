@@ -1,3 +1,40 @@
+import { r as reactExports } from "./_virtual_reload-on-update-in-view.js";
+const storageMap = /* @__PURE__ */ new Map();
+function useStorage(storage2) {
+  const _data = reactExports.useSyncExternalStore(storage2.subscribe, storage2.getSnapshot);
+  if (!storageMap.has(storage2)) {
+    storageMap.set(storage2, wrapPromise(storage2.get()));
+  }
+  if (_data !== null) {
+    storageMap.set(storage2, { read: () => _data });
+  }
+  return _data ?? storageMap.get(storage2).read();
+}
+function wrapPromise(promise) {
+  let status = "pending";
+  let result;
+  const suspender = promise.then(
+    (r) => {
+      status = "success";
+      result = r;
+    },
+    (e) => {
+      status = "error";
+      result = e;
+    }
+  );
+  return {
+    read() {
+      if (status === "pending") {
+        throw suspender;
+      } else if (status === "error") {
+        throw result;
+      } else if (status === "success") {
+        return result;
+      }
+    }
+  };
+}
 var StorageType = /* @__PURE__ */ ((StorageType2) => {
   StorageType2["Local"] = "local";
   StorageType2["Sync"] = "sync";
@@ -104,16 +141,16 @@ const extensionStorage = {
       };
     });
   },
-  toggleExtension: () => {
-    console.log({ ...storage });
+  toggleExtension: (isEnabled) => {
     storage.set((storage2) => {
       return {
         theme: storage2.theme,
-        extensionEnabled: !storage2.extensionEnabled
+        extensionEnabled: isEnabled
       };
     });
   }
 };
 export {
-  extensionStorage as e
+  extensionStorage as e,
+  useStorage as u
 };

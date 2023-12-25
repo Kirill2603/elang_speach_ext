@@ -4,43 +4,7 @@ var __publicField = (obj, key, value) => {
   __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   return value;
 };
-import { r as reactExports, j as jsxRuntimeExports } from "./_virtual_reload-on-update-in-view.js";
-const storageMap = /* @__PURE__ */ new Map();
-function useStorage(storage) {
-  const _data = reactExports.useSyncExternalStore(storage.subscribe, storage.getSnapshot);
-  if (!storageMap.has(storage)) {
-    storageMap.set(storage, wrapPromise(storage.get()));
-  }
-  if (_data !== null) {
-    storageMap.set(storage, { read: () => _data });
-  }
-  return _data ?? storageMap.get(storage).read();
-}
-function wrapPromise(promise) {
-  let status = "pending";
-  let result;
-  const suspender = promise.then(
-    (r) => {
-      status = "success";
-      result = r;
-    },
-    (e) => {
-      status = "error";
-      result = e;
-    }
-  );
-  return {
-    read() {
-      if (status === "pending") {
-        throw suspender;
-      } else if (status === "error") {
-        throw result;
-      } else if (status === "success") {
-        return result;
-      }
-    }
-  };
-}
+import { j as jsxRuntimeExports, r as reactExports } from "./_virtual_reload-on-update-in-view.js";
 function withSuspense(Component, SuspenseComponent) {
   return function WithSuspense(props) {
     return /* @__PURE__ */ jsxRuntimeExports.jsx(reactExports.Suspense, { fallback: SuspenseComponent, children: /* @__PURE__ */ jsxRuntimeExports.jsx(Component, { ...props }) });
@@ -71,6 +35,5 @@ function withErrorBoundary(Component2, ErrorComponent) {
 }
 export {
   withSuspense as a,
-  useStorage as u,
   withErrorBoundary as w
 };

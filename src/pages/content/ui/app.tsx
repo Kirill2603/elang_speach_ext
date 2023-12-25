@@ -1,9 +1,13 @@
 import { useRef, useState, useCallback, useEffect } from "react";
-import { CloseSVG } from "@root/src/assets/svg/CloseSVG";
-import { PauseSVG } from "@root/src/assets/svg/PauseSVG";
-import { PlaySVG } from "@root/src/assets/svg/PlaySVG";
-import { SaveSVG } from "@root/src/assets/svg/SaveSVG";
-import { TranslateSVG } from "@root/src/assets/svg/TranslateSVG";
+import useStorage from "@root/src/shared/hooks/useStorage";
+import { extensionStorage } from "@root/src/shared/storages/extensionStorage";
+import {
+  CloseButton,
+  PlayPauseButton,
+  SaveButton,
+  SpeachButton,
+  TranslateButton,
+} from "./Buttons";
 
 export const getWordAt = (str: string, pos: number) => {
   str = String(str);
@@ -17,6 +21,7 @@ export const getWordAt = (str: string, pos: number) => {
 };
 
 export const App = () => {
+  const { extensionEnabled } = useStorage(extensionStorage);
   const documentRef = useRef(document);
   const [hoveredElement, setHoveredElement] = useState<HTMLElement | null>(
     null
@@ -142,11 +147,11 @@ export const App = () => {
       setIsPlay(false);
       documentRef.current.removeEventListener("click", () => {}, false);
     };
-  }, [hoveredElement]);
+  }, [hoveredElement, extensionEnabled]);
 
   return (
     <>
-      {hoveredElement && (
+      {hoveredElement && extensionEnabled && (
         <div
           style={{
             position: "absolute",
@@ -180,59 +185,4 @@ export const App = () => {
       )}
     </>
   );
-};
-
-const SaveButton = ({ onClickSave }) => {
-  return (
-    <button onClick={(event) => onClickSave(event)} className="SaveButton">
-      <SaveSVG />
-    </button>
-  );
-};
-
-const TranslateButton = ({ isLoadingTranslate, onClickTranslate }) => {
-  return (
-    <button
-      onClick={(event) => onClickTranslate(event)}
-      disabled={isLoadingTranslate}
-      className="TranslateButton"
-    >
-      {isLoadingTranslate ? <CircleLoader /> : <TranslateSVG />}
-    </button>
-  );
-};
-
-const CloseButton = ({ onClickClose }) => {
-  return (
-    <button onClick={(event) => onClickClose(event)} className="CloseButton">
-      <CloseSVG />
-    </button>
-  );
-};
-
-const SpeachButton = ({ onClickSpeach }) => {
-  return (
-    <button onClick={(event) => onClickSpeach(event)} className="SpeachButton">
-      Speach
-    </button>
-  );
-};
-
-const PlayPauseButton = ({ isPlay, pause, onClickPlayPause }) => {
-  return (
-    <>
-      {isPlay && (
-        <button
-          onClick={(event) => onClickPlayPause(event)}
-          className="PlayPauseButton"
-        >
-          {pause ? <PlaySVG color="#fff" /> : <PauseSVG color="#fff" />}
-        </button>
-      )}
-    </>
-  );
-};
-
-const CircleLoader = () => {
-  return <div className="lds-dual-ring"></div>;
 };

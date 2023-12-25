@@ -1,9 +1,10 @@
-import exampleThemeStorage from '@src/shared/storages/exampleThemeStorage';
+// import {extensionStorage} from '@root/src/shared/storages/extensionStorage';
 
-async function toggleTheme() {
-  console.log('initial theme', await exampleThemeStorage.get());
-  exampleThemeStorage.toggle();
-  console.log('toggled theme', await exampleThemeStorage.get());
-}
+// async function toggleTheme() {
+//   console.log('initial theme', (await extensionStorage.get()).extensionEnabled);
 
-void toggleTheme();
+// }
+
+// void toggleTheme();
+
+

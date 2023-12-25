@@ -1,6 +1,6 @@
 import { j as jsxRuntimeExports, r as reactExports, a as addHmrIntoView, c as createRoot } from "../../../assets/js/_virtual_reload-on-update-in-view.js";
-import { w as withErrorBoundary, a as withSuspense, u as useStorage } from "../../../assets/js/withErrorBoundary.js";
-import { e as exampleThemeStorage } from "../../../assets/js/exampleThemeStorage.js";
+import { u as useStorage, e as extensionStorage } from "../../../assets/js/extensionStorage.js";
+import { w as withErrorBoundary, a as withSuspense } from "../../../assets/js/withErrorBoundary.js";
 const extIcon = "/assets/png/ext_icon.chunk.png";
 const Switch = ({ isChecked, toggleSwitch }) => {
   const onClickSwitch = (e) => {
@@ -14,21 +14,22 @@ const Switch = ({ isChecked, toggleSwitch }) => {
   ] });
 };
 const Popup = () => {
-  useStorage(exampleThemeStorage);
-  const [isExtensionON, toggleExtension] = reactExports.useState(true);
+  const { extensionEnabled } = useStorage(extensionStorage);
+  const [isExtensionON, toggleExtension] = reactExports.useState(extensionEnabled);
   const onToggleExtension = () => {
     toggleExtension(!isExtensionON);
+    extensionStorage.toggleExtension(!isExtensionON);
   };
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "div",
-    {
-      className: "App",
-      children: /* @__PURE__ */ jsxRuntimeExports.jsxs("header", { className: "App-header", children: [
-        /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: extIcon, className: "App-logo", alt: "logo" }),
-        /* @__PURE__ */ jsxRuntimeExports.jsx(Switch, { isChecked: isExtensionON, toggleSwitch: onToggleExtension })
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "App", children: /* @__PURE__ */ jsxRuntimeExports.jsxs("header", { className: "App-header", children: [
+    /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "LogoContainer", children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx("img", { src: extIcon, className: "App-logo", alt: "logo" }),
+      /* @__PURE__ */ jsxRuntimeExports.jsxs("div", { className: "LogoTitle", children: [
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "Title", children: "eLang" }),
+        /* @__PURE__ */ jsxRuntimeExports.jsx("span", { className: "Subtitle", children: " Text to Speach" })
       ] })
-    }
-  );
+    ] }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(Switch, { isChecked: isExtensionON, toggleSwitch: onToggleExtension })
+  ] }) });
 };
 const Popup$1 = withErrorBoundary(
   withSuspense(Popup, /* @__PURE__ */ jsxRuntimeExports.jsx("div", { children: " Loading ... " })),

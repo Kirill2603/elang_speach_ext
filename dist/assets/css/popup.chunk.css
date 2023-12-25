@@ -22,8 +22,29 @@ body {
 }
 
 .App-logo {
-  height: 50px;
+  height: 40px;
   pointer-events: none;
+}
+
+.LogoContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.LogoContainer .LogoTitle {
+  display: flex;
+  flex-direction: column;
+  padding-left: 10px;
+}
+.LogoContainer .LogoTitle .Title {
+  font-size: 26px;
+  font-weight: 700;
+  color: rgb(79, 110, 253);
+}
+.LogoContainer .LogoTitle .Subtitle {
+  font-size: 20px;
+  font-weight: 400;
+  color: rgb(79, 110, 253);
 }input[type=checkbox] {
   height: 0;
   width: 0;

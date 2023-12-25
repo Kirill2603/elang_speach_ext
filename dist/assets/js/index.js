@@ -1,4 +1,5 @@
 import { j as jsxRuntimeExports, r as reactExports, a as addHmrIntoView, c as createRoot } from "./_virtual_reload-on-update-in-view.js";
+import { u as useStorage, e as extensionStorage } from "./extensionStorage.js";
 const CloseSVG = () => {
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(
     "svg",
@@ -145,6 +146,39 @@ const TranslateSVG = () => {
     }
   );
 };
+const SaveButton = ({ onClickSave }) => {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: (event) => onClickSave(event), className: "SaveButton", children: /* @__PURE__ */ jsxRuntimeExports.jsx(SaveSVG, {}) });
+};
+const TranslateButton = ({ isLoadingTranslate, onClickTranslate }) => {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(
+    "button",
+    {
+      onClick: (event) => onClickTranslate(event),
+      disabled: isLoadingTranslate,
+      className: "TranslateButton",
+      children: isLoadingTranslate ? /* @__PURE__ */ jsxRuntimeExports.jsx(CircleLoader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsx(TranslateSVG, {})
+    }
+  );
+};
+const CloseButton = ({ onClickClose }) => {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: (event) => onClickClose(event), className: "CloseButton", children: /* @__PURE__ */ jsxRuntimeExports.jsx(CloseSVG, {}) });
+};
+const SpeachButton = ({ onClickSpeach }) => {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: (event) => onClickSpeach(event), className: "SpeachButton", children: "Speach" });
+};
+const PlayPauseButton = ({ isPlay, pause, onClickPlayPause }) => {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: isPlay && /* @__PURE__ */ jsxRuntimeExports.jsx(
+    "button",
+    {
+      onClick: (event) => onClickPlayPause(event),
+      className: "PlayPauseButton",
+      children: pause ? /* @__PURE__ */ jsxRuntimeExports.jsx(PlaySVG, { color: "#fff" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(PauseSVG, { color: "#fff" })
+    }
+  ) });
+};
+const CircleLoader = () => {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "lds-dual-ring" });
+};
 const getWordAt = (str, pos) => {
   str = String(str);
   pos = Number(pos) >>> 0;
@@ -155,6 +189,7 @@ const getWordAt = (str, pos) => {
   return str.slice(left, right + pos);
 };
 const App = () => {
+  const { extensionEnabled } = useStorage(extensionStorage);
   const documentRef = reactExports.useRef(document);
   const [hoveredElement, setHoveredElement] = reactExports.useState(
     null
@@ -243,8 +278,8 @@ const App = () => {
       documentRef.current.removeEventListener("click", () => {
       }, false);
     };
-  }, [hoveredElement]);
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: hoveredElement && /* @__PURE__ */ jsxRuntimeExports.jsxs(
+  }, [hoveredElement, extensionEnabled]);
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: hoveredElement && extensionEnabled && /* @__PURE__ */ jsxRuntimeExports.jsxs(
     "div",
     {
       style: {
@@ -280,39 +315,6 @@ const App = () => {
       ]
     }
   ) });
-};
-const SaveButton = ({ onClickSave }) => {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: (event) => onClickSave(event), className: "SaveButton", children: /* @__PURE__ */ jsxRuntimeExports.jsx(SaveSVG, {}) });
-};
-const TranslateButton = ({ isLoadingTranslate, onClickTranslate }) => {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "button",
-    {
-      onClick: (event) => onClickTranslate(event),
-      disabled: isLoadingTranslate,
-      className: "TranslateButton",
-      children: isLoadingTranslate ? /* @__PURE__ */ jsxRuntimeExports.jsx(CircleLoader, {}) : /* @__PURE__ */ jsxRuntimeExports.jsx(TranslateSVG, {})
-    }
-  );
-};
-const CloseButton = ({ onClickClose }) => {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: (event) => onClickClose(event), className: "CloseButton", children: /* @__PURE__ */ jsxRuntimeExports.jsx(CloseSVG, {}) });
-};
-const SpeachButton = ({ onClickSpeach }) => {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("button", { onClick: (event) => onClickSpeach(event), className: "SpeachButton", children: "Speach" });
-};
-const PlayPauseButton = ({ isPlay, pause, onClickPlayPause }) => {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(jsxRuntimeExports.Fragment, { children: isPlay && /* @__PURE__ */ jsxRuntimeExports.jsx(
-    "button",
-    {
-      onClick: (event) => onClickPlayPause(event),
-      className: "PlayPauseButton",
-      children: pause ? /* @__PURE__ */ jsxRuntimeExports.jsx(PlaySVG, { color: "#fff" }) : /* @__PURE__ */ jsxRuntimeExports.jsx(PauseSVG, { color: "#fff" })
-    }
-  ) });
-};
-const CircleLoader = () => {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx("div", { className: "lds-dual-ring" });
 };
 const injectedStyle = '.SelectedContainer {\n  background-color: rgba(79, 110, 253, 0.2);\n  width: 100%;\n  height: 100%;\n  border-radius: 7px;\n  box-shadow: -1px 5px 10px 3px rgba(79, 110, 253, 0.2);\n  border: 1px solid rgba(79, 110, 253, 0.3);\n}\n\n.ButtonsContainer {\n  margin-top: 5px;\n  width: 100%;\n  display: flex;\n  justify-content: flex-end;\n  align-items: center;\n}\n.ButtonsContainer .ButtonsBloc {\n  width: auto;\n  box-shadow: -1px 5px 10px 3px rgba(79, 110, 253, 0.3);\n  background-color: rgb(124, 148, 255);\n  border-radius: 7px;\n  border: 1px solid rgb(79, 110, 253);\n  pointer-events: all;\n  padding: 3px;\n  display: flex;\n  justify-content: flex-end;\n  align-items: stretch;\n  gap: 5px;\n}\n\n.SpeachButton {\n  cursor: pointer;\n  background: none;\n  border: none;\n  border-radius: 7px;\n  background-color: rgb(79, 110, 253);\n  color: #fff;\n  font-size: 18px;\n  font-weight: 500;\n  padding: 5px 10px;\n}\n.SpeachButton:hover {\n  background-color: rgb(70, 100, 234);\n}\n.SpeachButton:active {\n  background-color: rgb(58, 83, 194);\n}\n\n.PlayPauseButton {\n  cursor: pointer;\n  background: none;\n  border: none;\n  padding: 0;\n  height: auto;\n  width: 30px;\n}\n.PlayPauseButton svg {\n  height: 100%;\n  width: auto;\n}\n\n.CloseButton {\n  pointer-events: all;\n  cursor: pointer;\n  background: none;\n  border: none;\n  padding: 0;\n  height: 22px;\n  position: absolute;\n  right: -13px;\n  top: -13px;\n  box-shadow: -1px 5px 10px 3px rgba(79, 110, 253, 0.3);\n  border-radius: 100%;\n  background-color: rgb(79, 110, 253);\n}\n.CloseButton:hover {\n  background-color: rgb(70, 100, 234);\n}\n.CloseButton:active {\n  background-color: rgb(58, 83, 194);\n}\n.CloseButton svg {\n  fill: rgb(79, 110, 253);\n  scale: 1;\n}\n.CloseButton svg:hover {\n  fill: rgb(70, 100, 234);\n}\n.CloseButton svg:active {\n  fill: rgb(58, 83, 194);\n}\n\n.TranslateButton {\n  cursor: pointer;\n  background: none;\n  border: none;\n  height: 30px;\n  width: 30px;\n  background-color: rgb(79, 110, 253);\n  border-radius: 7px;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n.TranslateButton:hover {\n  background-color: rgb(70, 100, 234);\n}\n.TranslateButton:active {\n  background-color: rgb(58, 83, 194);\n}\n.TranslateButton svg {\n  height: 100%;\n  width: 100%;\n}\n\n.SaveButton {\n  cursor: pointer;\n  background: none;\n  border: none;\n  height: 30px;\n  width: 30px;\n  background-color: rgb(79, 110, 253);\n  border-radius: 7px;\n}\n.SaveButton:hover {\n  background-color: rgb(70, 100, 234);\n}\n.SaveButton:active {\n  background-color: rgb(58, 83, 194);\n}\n.SaveButton svg {\n  height: 100%;\n  width: 100%;\n}\n\n.lds-dual-ring {\n  display: flex;\n  height: 30px;\n  width: 30px;\n  justify-content: center;\n  align-items: center;\n}\n\n.lds-dual-ring:after {\n  content: "";\n  display: block;\n  height: 15px;\n  width: 15px;\n  border-radius: 50%;\n  border: 2px solid #fff;\n  border-color: #fff transparent #fff transparent;\n  animation: lds-dual-ring 1.2s linear infinite;\n}\n\n@keyframes lds-dual-ring {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(360deg);\n  }\n}';
 addHmrIntoView("pages/content");

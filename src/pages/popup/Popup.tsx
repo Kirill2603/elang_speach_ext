@@ -2,49 +2,30 @@ import React, { useState } from "react";
 import extIcon from "@assets/ext_icon.png";
 import "@pages/popup/Popup.scss";
 import useStorage from "@src/shared/hooks/useStorage";
-import exampleThemeStorage from "@src/shared/storages/exampleThemeStorage";
+import { extensionStorage } from "@root/src/shared/storages/extensionStorage";
 import withSuspense from "@src/shared/hoc/withSuspense";
 import withErrorBoundary from "@src/shared/hoc/withErrorBoundary";
 import { Switch } from "./components/Switch";
 
 const Popup = () => {
-  const theme = useStorage(exampleThemeStorage);
-  const [isExtensionON, toggleExtension] = useState<boolean>(true);
+  const { extensionEnabled } = useStorage(extensionStorage);
+  const [isExtensionON, toggleExtension] = useState<boolean>(extensionEnabled);
 
   const onToggleExtension = () => {
     toggleExtension(!isExtensionON);
+    extensionStorage.toggleExtension(!isExtensionON);
   };
 
   return (
-    <div
-      className="App"
-      // style={{
-      //   backgroundColor: theme === 'light' ? '#fff' : '#000',
-      // }}
-    >
-      {/* <header className="App-header" style={{ color: theme === 'light' ? '#000' : '#fff' }}> */}
+    <div className="App">
       <header className="App-header">
-        <img src={extIcon} className="App-logo" alt="logo" />
-        {/* <p>
-          Edit <code>src/pages/popup/Popup.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ color: theme === 'light' && '#0281dc', marginBottom: '10px' }}>
-          Learn React!
-        </a>
-        <button
-          style={{
-            backgroundColor: theme === 'light' ? '#fff' : '#000',
-            color: theme === 'light' ? '#000' : '#fff',
-          }}
-          onClick={exampleThemeStorage.toggle}>
-          Toggle theme
-        </button> */}
-
+        <div className="LogoContainer">
+          <img src={extIcon} className="App-logo" alt="logo" />
+          <div className="LogoTitle">
+            <span className="Title">eLang</span>
+            <span className="Subtitle"> Text to Speach</span>
+          </div>
+        </div>
         <Switch isChecked={isExtensionON} toggleSwitch={onToggleExtension} />
       </header>
     </div>
