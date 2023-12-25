@@ -1043,10 +1043,7 @@ var browserPolyfill = { exports: {} };
     }
   });
 })(browserPolyfill);
-addHmrIntoScript("pages/background");
-addHmrIntoScript("pages/content/style.scss");
-console.log("background loaded");
-const dataFromGoogleApiFromPopup = async (word, from, to) => {
+const getTranslateFromAPI = async (word, from, to) => {
   const url = "https://easy4learn.com/api/vocabulary-translate/translate-phases";
   const options = {
     method: "POST",
@@ -1060,20 +1057,20 @@ const dataFromGoogleApiFromPopup = async (word, from, to) => {
       text: word
     })
   };
-  const translate2 = fetch(url, options).then((response) => response.json()).then((data) => {
+  const translate = fetch(url, options).then((response) => response.json()).then((data) => {
     return data;
   }).catch((e) => console.log(e));
-  return translate2;
+  return translate;
 };
+addHmrIntoScript("pages/background");
+addHmrIntoScript("pages/content/style.scss");
 const getTranslate = async (request, sender, sendResponse) => {
-  const data = await dataFromGoogleApiFromPopup(request.text, "en", "ru");
+  const data = await getTranslateFromAPI(request.text, "en", "ru");
   sendResponse(data);
 };
-chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    if (request.type === "translate") {
-      getTranslate(request, sender, sendResponse);
-    }
-    return true;
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  if (request.type === "translate") {
+    getTranslate(request, sender, sendResponse);
   }
-);
+  return true;
+});
