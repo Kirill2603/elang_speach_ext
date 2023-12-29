@@ -210,7 +210,8 @@ const App = () => {
   };
   const onClickElement = reactExports.useCallback((event) => {
     const element = event.target;
-    if (element.tagName === "P" || element.tagName !== "BODY" && element.innerText !== (hoveredElement == null ? void 0 : hoveredElement.innerText)) {
+    if (element.tagName === "P" || // (element.tagName !== ("BODY" || "A") &&
+    element.innerText !== (hoveredElement == null ? void 0 : hoveredElement.innerText)) {
       setHoveredElement(element);
       setElementSizes(element.getBoundingClientRect());
       setOldElementText(element.innerHTML);

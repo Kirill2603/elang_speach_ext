@@ -45,6 +45,24 @@ export const App = () => {
     synth.speak(utterance);
   };
 
+  // chrome.runtime.onMessage.addListener(
+  //   function(request, sender, sendResponse) {
+  //     // listen for messages sent from background.js
+  //     if (request.message === 'change') {
+  //       console.log('change');
+        
+  //       this.forceUpdate();
+  //       sendResponse()
+  //     }
+  // });
+
+  // chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+  //   if (changeInfo) {
+  //     console.log('change');
+      
+  //   }
+  // })
+
   const onClickElement = useCallback((event: any) => {
     const element = event.target as HTMLElement;
     // console.log(element.innerHTML.split(" "));
@@ -59,11 +77,13 @@ export const App = () => {
     // onMouseOut="this.style.color='#000'">${text}</mark>`,
     //    )
     //    .join(" ");
-
+    // console.log(element.tagName);
+    
     if (
-      element.tagName === ("P" || "SPAN" || "DIV") ||
-      (element.tagName !== "BODY" &&
-        element.innerText !== hoveredElement?.innerText)
+      element.tagName ===
+        ("P" || "SPAN" || "H1" || "H2" || "H3" || "H4" || "H5" || "H6" || 'DIV') ||
+      // (element.tagName !== ("BODY" || "A") &&
+      element.innerText !== hoveredElement?.innerText
     ) {
       setHoveredElement(element);
       setElementSizes(element.getBoundingClientRect());
@@ -127,9 +147,7 @@ export const App = () => {
 
   useEffect(() => {
     if (translated) {
-      // const styles = window.getComputedStyle(hoveredElement);
       hoveredElement.innerText = translated.translation;
-      // hoveredElement.style = styles
       setElementSizes(hoveredElement.getBoundingClientRect());
     }
   }, [translated]);
